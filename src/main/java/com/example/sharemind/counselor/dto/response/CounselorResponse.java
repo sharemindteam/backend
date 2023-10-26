@@ -8,7 +8,6 @@ import lombok.Getter;
 public class CounselorResponse {
 
     private final Long counselorId;
-
     private final String nickname;
 
     @Builder

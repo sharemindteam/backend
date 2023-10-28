@@ -18,6 +18,7 @@ public class Consult extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "consult_id")
     private Long consultId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

@@ -14,8 +14,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v0/message")
 public class MessageController {
     private final MessageService messageService;
+    private final ConsultService consultService;
     @PostMapping("/new")
     public void saveMessage(@RequestBody PostNewReq postNewReq){
         messageService.saveMessage(postNewReq);
+        Boolean isSender = postNewReq.getIsSender();
+        if (Boolean.TRUE.equals(isSender)) {
+            consultService.notifyConsultationApply(postNewReq.getConsultUuid());
+        } else if (Boolean.FALSE.equals(isSender)) {
+            consultService.notifyConsultationReply(postNewReq.getConsultUuid());
+        }
     }
 }

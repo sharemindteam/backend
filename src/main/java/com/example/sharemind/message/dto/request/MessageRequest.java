@@ -4,7 +4,7 @@ import java.util.UUID;
 import lombok.Getter;
 
 @Getter
-public class PostNewReq {
+public class MessageRequest {
     private UUID consultUuid;
     private Boolean isSender;
     private String content;

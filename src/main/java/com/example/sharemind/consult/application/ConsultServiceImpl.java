@@ -2,7 +2,6 @@ package com.example.sharemind.consult.application;
 
 import com.example.sharemind.consult.domain.Consult;
 import com.example.sharemind.consult.dto.request.CreateConsultRequest;
-import com.example.sharemind.consult.exception.ConsultNotFoundException;
 import com.example.sharemind.consult.repository.ConsultRepository;
 import com.example.sharemind.counselor.domain.Counselor;
 import com.example.sharemind.counselor.exception.CounselorNotFoundException;

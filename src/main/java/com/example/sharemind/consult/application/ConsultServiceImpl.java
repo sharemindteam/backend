@@ -45,7 +45,7 @@ public class ConsultServiceImpl implements ConsultService {
     @Override
     public ConsultResponse getConsult(UUID consultUuid, GetConsultRequest getConsultRequest) {
 
-        Consult consult = consultRepository.findByConsultUuid(consultUuid)
+        Consult consult = consultRepository.findByConsultUuidAndIsPay(consultUuid, true)
                 .orElseThrow(() -> new ConsultNotFoundException(consultUuid));
 
         if (!consult.getPassword().equals(getConsultRequest.getPassword())) {

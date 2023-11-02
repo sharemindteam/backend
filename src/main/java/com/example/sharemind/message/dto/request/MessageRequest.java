@@ -6,6 +6,6 @@ import lombok.Getter;
 @Getter
 public class MessageRequest {
     private UUID consultUuid;
-    private Boolean isSender;
+    private Boolean isCustomer;
     private String content;
 }

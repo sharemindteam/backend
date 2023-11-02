@@ -7,18 +7,18 @@ import lombok.Getter;
 @Getter
 public class MessageResponse {
 
-    private final Boolean isSender;
+    private final Boolean isCustomer;
     private final String content;
 
     @Builder
-    public MessageResponse(Boolean isSender, String content) {
-        this.isSender = isSender;
+    public MessageResponse(Boolean isCustomer, String content, LocalDateTime createdAt) {
+        this.isCustomer = isCustomer;
         this.content = content;
     }
 
     public static MessageResponse from(Message message) {
         return MessageResponse.builder()
-                .isSender(message.getIsSender())
+                .isCustomer(message.getIsCustomer())
                 .content(message.getContent())
                 .build();
     }

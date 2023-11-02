@@ -6,8 +6,10 @@ import com.example.sharemind.counselor.exception.CounselorNotFoundException;
 import com.example.sharemind.counselor.repository.CounselorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class CounselorServiceImpl implements CounselorService {
 

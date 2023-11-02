@@ -21,15 +21,15 @@ public class Message extends BaseEntity {
     @JoinColumn(name = "consult_id")
     private Consult consult;
 
-    private Boolean isSender;
+    private Boolean isCustomer;
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
     @Builder
-    public Message(Consult consult, Boolean isSender, String content) {
+    public Message(Consult consult, Boolean isCustomer, String content) {
         this.consult = consult;
-        this.isSender = isSender;
+        this.isCustomer = isCustomer;
         this.content = content;
     }
 }

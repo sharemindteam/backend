@@ -25,7 +25,7 @@ public class MessageServiceImpl implements MessageService {
 
         Message message = Message.builder()
                 .consult(consult)
-                .isSender(messageRequest.getIsSender())
+                .isCustomer(messageRequest.getIsCustomer())
                 .content(messageRequest.getContent())
                 .build();
         messageRepository.save(message);

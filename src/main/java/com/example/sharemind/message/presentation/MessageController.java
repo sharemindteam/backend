@@ -21,10 +21,10 @@ public class MessageController {
     @PostMapping
     public ResponseEntity<Void> createMessage(@RequestBody MessageRequest messageRequest) {
         messageService.saveMessage(messageRequest);
-        Boolean isSender = messageRequest.getIsSender();
-        if (Boolean.TRUE.equals(isSender)) {
+        Boolean isCustomer = messageRequest.getIsCustomer();
+        if (Boolean.TRUE.equals(isCustomer)) {
             emailService.notifyConsultationApply(messageRequest.getConsultUuid());
-        } else if (Boolean.FALSE.equals(isSender)) {
+        } else if (Boolean.FALSE.equals(isCustomer)) {
             emailService.notifyConsultationReply(messageRequest.getConsultUuid());
         }
         return ResponseEntity.status(HttpStatus.CREATED).build();

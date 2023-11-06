@@ -21,8 +21,11 @@ public class ConsultController {
     private final EmailService emailService;
 
     @PostMapping
-    public ResponseEntity<UUID> createConsult(@RequestBody CreateConsultRequest createConsultRequest) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(consultService.createConsult(createConsultRequest));
+    public ResponseEntity<Void> createConsult(@RequestBody CreateConsultRequest createConsultRequest) {
+
+        consultService.createConsult(createConsultRequest);
+
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/{consultUuid}")

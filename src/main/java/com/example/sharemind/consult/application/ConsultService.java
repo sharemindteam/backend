@@ -4,10 +4,10 @@ import java.util.UUID;
 
 import com.example.sharemind.consult.dto.request.CreateConsultRequest;
 import com.example.sharemind.consult.dto.request.GetConsultRequest;
-import com.example.sharemind.consult.dto.response.ConsultResponse;
+import com.example.sharemind.consult.dto.response.GetConsultResponse;
 
 public interface ConsultService {
     void createConsult(CreateConsultRequest createConsultRequest);
 
-    ConsultResponse getConsult(UUID consultUuid, GetConsultRequest getConsultRequest);
+    GetConsultResponse getConsult(UUID consultUuid, GetConsultRequest getConsultRequest);
 }

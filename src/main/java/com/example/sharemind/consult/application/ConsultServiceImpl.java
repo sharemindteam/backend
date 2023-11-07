@@ -3,7 +3,7 @@ package com.example.sharemind.consult.application;
 import com.example.sharemind.consult.domain.Consult;
 import com.example.sharemind.consult.dto.request.CreateConsultRequest;
 import com.example.sharemind.consult.dto.request.GetConsultRequest;
-import com.example.sharemind.consult.dto.response.ConsultResponse;
+import com.example.sharemind.consult.dto.response.GetConsultResponse;
 import com.example.sharemind.consult.exception.ConsultNotFoundException;
 import com.example.sharemind.consult.exception.IncorrectPasswordException;
 import com.example.sharemind.consult.mapper.ConsultMapper;
@@ -49,12 +49,18 @@ public class ConsultServiceImpl implements ConsultService {
     }
 
     @Override
-    public ConsultResponse getConsult(UUID consultUuid, GetConsultRequest getConsultRequest) {
+    public GetConsultResponse getConsult(UUID consultUuid, GetConsultRequest getConsultRequest) {
 
-        Consult consult = consultRepository.findByConsultUuidAndIsPay(consultUuid, true)
+        Consult consult = consultRepository.findByConsultUuidAndIsPayAndIsActivated(consultUuid, true, true)
                 .orElseThrow(() -> new ConsultNotFoundException(consultUuid));
 
-        if (!consult.getPassword().equals(getConsultRequest.getPassword())) {
+        boolean loginByCustomer;
+
+        if (consult.getCustomerPassword().equals(getConsultRequest.getPassword())) {
+            loginByCustomer = true;
+        } else if (consult.getCounselorPassword().equals(getConsultRequest.getPassword())) {
+            loginByCustomer = false;
+        } else {
             throw new IncorrectPasswordException();
         }
 
@@ -63,6 +69,6 @@ public class ConsultServiceImpl implements ConsultService {
                 .map(MessageResponse::from)
                 .toList();
 
-        return ConsultResponse.from(consult, messageResponses);
+        return GetConsultResponse.from(loginByCustomer, consult, messageResponses);
     }
 }

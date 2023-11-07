@@ -5,5 +5,5 @@ import lombok.Getter;
 @Getter
 public class GetConsultRequest {
 
-    private String password;
+    private Long password;
 }

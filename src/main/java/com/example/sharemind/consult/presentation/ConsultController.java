@@ -4,7 +4,7 @@ import com.example.sharemind.consult.application.ConsultService;
 import com.example.sharemind.consult.application.EmailService;
 import com.example.sharemind.consult.dto.request.CreateConsultRequest;
 import com.example.sharemind.consult.dto.request.GetConsultRequest;
-import com.example.sharemind.consult.dto.response.ConsultResponse;
+import com.example.sharemind.consult.dto.response.GetConsultResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +29,7 @@ public class ConsultController {
     }
 
     @GetMapping("/{consultUuid}")
-    public ResponseEntity<ConsultResponse> getConsult(@PathVariable UUID consultUuid, @RequestBody GetConsultRequest getConsultRequest) {
+    public ResponseEntity<GetConsultResponse> getConsult(@PathVariable UUID consultUuid, @RequestBody GetConsultRequest getConsultRequest) {
         return ResponseEntity.ok(consultService.getConsult(consultUuid, getConsultRequest));
     }
 

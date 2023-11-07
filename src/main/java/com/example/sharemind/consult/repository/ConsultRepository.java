@@ -10,5 +10,5 @@ import org.springframework.stereotype.Repository;
 public interface ConsultRepository extends JpaRepository<Consult, Long> {
     Optional<Consult> findByConsultUuid(UUID consultUuid);
 
-    Optional<Consult> findByConsultUuidAndIsPay(UUID consultUuid, Boolean isPay);
+    Optional<Consult> findByConsultUuidAndIsPayAndIsActivated(UUID consultUuid, Boolean isPay, Boolean isActivated);
 }

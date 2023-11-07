@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v0/consult")
+@RequestMapping("/api/v0/consults")
 @RequiredArgsConstructor
 public class ConsultController {
 
@@ -21,8 +21,11 @@ public class ConsultController {
     private final EmailService emailService;
 
     @PostMapping
-    public ResponseEntity<UUID> createConsult(@RequestBody CreateConsultRequest createConsultRequest) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(consultService.createConsult(createConsultRequest));
+    public ResponseEntity<Void> createConsult(@RequestBody CreateConsultRequest createConsultRequest) {
+
+        consultService.createConsult(createConsultRequest);
+
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/{consultUuid}")

@@ -6,11 +6,13 @@ import com.example.sharemind.consult.dto.request.GetConsultRequest;
 import com.example.sharemind.consult.dto.response.ConsultResponse;
 import com.example.sharemind.consult.exception.ConsultNotFoundException;
 import com.example.sharemind.consult.exception.IncorrectPasswordException;
+import com.example.sharemind.consult.mapper.ConsultMapper;
 import com.example.sharemind.consult.repository.ConsultRepository;
 import com.example.sharemind.counselor.domain.Counselor;
 import com.example.sharemind.counselor.exception.CounselorNotFoundException;
 import com.example.sharemind.counselor.repository.CounselorRepository;
 import com.example.sharemind.customer.domain.Customer;
+import com.example.sharemind.customer.mapper.CustomerMapper;
 import com.example.sharemind.customer.repository.CustomerRepository;
 import com.example.sharemind.message.dto.response.MessageResponse;
 import com.example.sharemind.message.repository.MessageRepository;
@@ -31,18 +33,19 @@ public class ConsultServiceImpl implements ConsultService {
     private final ConsultRepository consultRepository;
     private final MessageRepository messageRepository;
 
+    private final CustomerMapper customerMapper;
+    private final ConsultMapper consultMapper;
+
     @Override
     @Transactional
-    public UUID createConsult(CreateConsultRequest createConsultRequest) {
+    public void createConsult(CreateConsultRequest createConsultRequest) {
 
         Counselor counselor = counselorRepository.findById(createConsultRequest.getCounselorId())
                 .orElseThrow(() -> new CounselorNotFoundException(createConsultRequest.getCounselorId()));
 
-        Customer customer = customerRepository.save(createConsultRequest.toCustomer());
+        Customer customer = customerRepository.save(customerMapper.toEntity(createConsultRequest.getEmail()));
 
-        Consult consult = consultRepository.save(createConsultRequest.toConsult(customer, counselor));
-
-        return consult.getConsultUuid();
+        Consult consult = consultRepository.save(consultMapper.toEntity(customer, counselor));
     }
 
     @Override

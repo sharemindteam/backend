@@ -31,22 +31,26 @@ public class Consult extends BaseEntity {
 
     private UUID consultUuid;
 
-    private String password;
+    private Long customerPassword;
+
+    private Long counselorPassword;
 
     private Boolean isPay;
 
     private Boolean isRefund;
 
-    private Boolean isReply;
+    private Boolean isActivated;
 
     @Builder
-    public Consult(Customer customer, Counselor counselor, UUID consultUuid, String password, Boolean isPay, Boolean isRefund, Boolean isReply) {
+    public Consult(Customer customer, Counselor counselor, UUID consultUuid, Long customerPassword, Long counselorPassword,
+                   Boolean isPay, Boolean isRefund, Boolean isActivated) {
         this.customer = customer;
         this.counselor = counselor;
         this.consultUuid = consultUuid;
-        this.password = password;
+        this.customerPassword = customerPassword;
+        this.counselorPassword = counselorPassword;
         this.isPay = isPay;
         this.isRefund = isRefund;
-        this.isReply = isReply;
+        this.isActivated = isActivated;
     }
 }

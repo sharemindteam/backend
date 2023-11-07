@@ -28,11 +28,8 @@ public class Customer extends BaseEntity {
     private String accountNumber;
 
     @Builder
-    public Customer(String nickname, String email, String name, String phoneNumber, String accountNumber) {
+    public Customer(String nickname, String email) {
         this.nickname = nickname;
         this.email = email;
-        this.name = name;
-        this.phoneNumber = phoneNumber;
-        this.accountNumber = accountNumber;
     }
 }

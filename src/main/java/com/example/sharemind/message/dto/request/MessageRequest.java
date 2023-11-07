@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 public class MessageRequest {
-    private UUID consultUuid;
+    private Long consultId;
     private Boolean isCustomer;
     private String content;
 }

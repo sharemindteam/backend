@@ -20,8 +20,8 @@ public class MessageServiceImpl implements MessageService {
     @Override
     @Transactional
     public void saveMessage(MessageRequest messageRequest) {
-        Consult consult = consultRepository.findByConsultUuid(messageRequest.getConsultUuid())
-                .orElseThrow(() -> new ConsultNotFoundException(messageRequest.getConsultUuid()));
+        Consult consult = consultRepository.findByConsultId(messageRequest.getConsultId())
+                .orElseThrow(() -> new ConsultNotFoundException(messageRequest.getConsultId()));
 
         Message message = Message.builder()
                 .consult(consult)

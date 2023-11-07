@@ -1,6 +1,6 @@
 package com.example.sharemind.message.presentation;
 
-import com.example.sharemind.consult.application.EmailService;
+import com.example.sharemind.email.application.EmailService;
 import com.example.sharemind.message.application.MessageService;
 import com.example.sharemind.message.dto.request.MessageRequest;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v0/message")
+@RequestMapping("/api/v0/messages")
 public class MessageController {
     private final MessageService messageService;
     private final EmailService emailService;
@@ -23,9 +23,9 @@ public class MessageController {
         messageService.saveMessage(messageRequest);
         Boolean isCustomer = messageRequest.getIsCustomer();
         if (Boolean.TRUE.equals(isCustomer)) {
-            emailService.notifyConsultationApply(messageRequest.getConsultUuid());
+            emailService.notifyConsultationApply(messageRequest.getConsultId());
         } else if (Boolean.FALSE.equals(isCustomer)) {
-            emailService.notifyConsultationReply(messageRequest.getConsultUuid());
+            emailService.notifyConsultationReply(messageRequest.getConsultId());
         }
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

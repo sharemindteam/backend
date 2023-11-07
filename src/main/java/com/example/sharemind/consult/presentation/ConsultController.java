@@ -1,7 +1,7 @@
 package com.example.sharemind.consult.presentation;
 
 import com.example.sharemind.consult.application.ConsultService;
-import com.example.sharemind.consult.application.EmailService;
+import com.example.sharemind.email.application.EmailService;
 import com.example.sharemind.consult.dto.request.CreateConsultRequest;
 import com.example.sharemind.consult.dto.request.GetConsultRequest;
 import com.example.sharemind.consult.dto.response.GetConsultResponse;
@@ -33,8 +33,8 @@ public class ConsultController {
         return ResponseEntity.ok(consultService.getConsult(consultUuid, getConsultRequest));
     }
 
-    @GetMapping("/email/{consult_uuid}")
-    public void sendEmailTest(@PathVariable UUID consult_uuid) {
-        emailService.sendConsultationLink(consult_uuid);
+    @GetMapping("/email/{consult_id}")
+    public void sendEmailTest(@PathVariable Long consultId) {
+        emailService.sendConsultationLink(consultId);
     }
 }

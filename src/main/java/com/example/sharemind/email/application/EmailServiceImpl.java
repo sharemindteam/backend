@@ -1,4 +1,4 @@
-package com.example.sharemind.consult.application;
+package com.example.sharemind.email.application;
 
 import com.example.sharemind.consult.domain.Consult;
 import com.example.sharemind.consult.exception.ConsultNotFoundException;
@@ -26,7 +26,7 @@ public class EmailServiceImpl implements EmailService {
         mailSender.send(message);
     }
 
-    public String setText(String text, String password, UUID uuid) {
+    public String setText(String text, Long password, UUID uuid) {
         String link = serverUrl + "/" + uuid.toString();
         return text + "상담 링크 : \n"
                 + link
@@ -34,32 +34,32 @@ public class EmailServiceImpl implements EmailService {
     }
 
 
-    public void sendConsultationLink(UUID consult_uuid) {
-        Consult consult = consultRepository.findByConsultUuid(consult_uuid)
-                .orElseThrow(() -> new ConsultNotFoundException(consult_uuid));
+    public void sendConsultationLink(Long consultId) {
+        Consult consult = consultRepository.findByConsultId(consultId)
+                .orElseThrow(() -> new ConsultNotFoundException(consultId));
         sendEmailToCustomer(consult, "상담 작성용 링크입니다.", "[sharemind]상담 링크입니다.");
     }
 
-    public void notifyConsultationApply(UUID consult_uuid) {
-        Consult consult = consultRepository.findByConsultUuid(consult_uuid)
-                .orElseThrow(() -> new ConsultNotFoundException(consult_uuid));
+    public void notifyConsultationApply(Long consultId) {
+        Consult consult = consultRepository.findByConsultId(consultId)
+                .orElseThrow(() -> new ConsultNotFoundException(consultId));
         sendEmailToCustomer(consult, "상담 신청이 완료되었습니다.", "[sharemind]상담 신청이 완료되었습니다.");
         sendEmailToCounselor(consult, "새로운 상담 신청이 있습니다.", "[sharemind]새로운 상담 신청이 있습니다.");
     }
 
-    public void notifyConsultationReply(UUID consult_uuid) {
-        Consult consult = consultRepository.findByConsultUuid(consult_uuid)
-                .orElseThrow(() -> new ConsultNotFoundException(consult_uuid));
+    public void notifyConsultationReply(Long consultId) {
+        Consult consult = consultRepository.findByConsultId(consultId)
+                .orElseThrow(() -> new ConsultNotFoundException(consultId));
         sendEmailToCustomer(consult, "상담이 응답되었습니다.", "[sharemind]상담 응답 링크입니다.");
     }
 
     private void sendEmailToCustomer(Consult consult, String text, String subject) {
-        String emailContent = setText(text, consult.getPassword(), consult.getConsultUuid());
+        String emailContent = setText(text, consult.getCustomerPassword(), consult.getConsultUuid());
         sendEmail(consult.getCustomer().getEmail(), subject, emailContent);
     }
 
     private void sendEmailToCounselor(Consult consult, String text, String subject) {
-        String emailContent = setText(text, consult.getPassword(), consult.getConsultUuid());
+        String emailContent = setText(text, consult.getCounselorPassword(), consult.getConsultUuid());
         sendEmail(consult.getCounselor().getEmail(), subject, emailContent);
     }
 }

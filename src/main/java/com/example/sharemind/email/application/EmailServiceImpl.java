@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 public class EmailServiceImpl implements EmailService {
     private final ConsultRepository consultRepository;
     private final JavaMailSender mailSender;
+    private final EmailContent emailContent;
 
     private void sendEmail(String to, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
@@ -26,7 +27,7 @@ public class EmailServiceImpl implements EmailService {
     public void sendConsultationLink(Long consultId) {
         Consult consult = consultRepository.findByConsultId(consultId)
                 .orElseThrow(() -> new ConsultNotFoundException(consultId));
-        String[] customerEmailContent = EmailContent.getConsultationLinkContent(consult.getCustomerPassword(),
+        String[] customerEmailContent = emailContent.getConsultationLinkContent(consult.getCustomerPassword(),
                 consult.getConsultUuid());
         sendEmail(consult.getCustomer().getEmail(), customerEmailContent[0], customerEmailContent[1]);
     }
@@ -34,9 +35,9 @@ public class EmailServiceImpl implements EmailService {
     public void notifyConsultationApply(Long consultId) {
         Consult consult = consultRepository.findByConsultId(consultId)
                 .orElseThrow(() -> new ConsultNotFoundException(consultId));
-        String[] customerEmailContent = EmailContent.getConsultationApplyCustomerContent(consult.getCustomerPassword(),
+        String[] customerEmailContent = emailContent.getConsultationApplyCustomerContent(consult.getCustomerPassword(),
                 consult.getConsultUuid());
-        String[] counselorEmailContent = EmailContent.getConsultationApplyCounselorContent(
+        String[] counselorEmailContent = emailContent.getConsultationApplyCounselorContent(
                 consult.getCounselorPassword(), consult.getConsultUuid());
         sendEmail(consult.getCustomer().getEmail(), customerEmailContent[0], customerEmailContent[1]);
         sendEmail(consult.getCounselor().getEmail(), counselorEmailContent[0], counselorEmailContent[1]);
@@ -45,7 +46,7 @@ public class EmailServiceImpl implements EmailService {
     public void notifyConsultationReply(Long consultId) {
         Consult consult = consultRepository.findByConsultId(consultId)
                 .orElseThrow(() -> new ConsultNotFoundException(consultId));
-        String[] customerEmailContent = EmailContent.getConsultationReplyContent(consult.getCustomerPassword(),
+        String[] customerEmailContent = emailContent.getConsultationReplyContent(consult.getCustomerPassword(),
                 consult.getConsultUuid());
         sendEmail(consult.getCustomer().getEmail(), customerEmailContent[0], customerEmailContent[1]);
     }

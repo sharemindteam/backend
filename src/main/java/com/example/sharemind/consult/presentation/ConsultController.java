@@ -5,9 +5,12 @@ import com.example.sharemind.email.application.EmailService;
 import com.example.sharemind.consult.dto.request.CreateConsultRequest;
 import com.example.sharemind.consult.dto.request.GetConsultRequest;
 import com.example.sharemind.consult.dto.response.GetConsultResponse;
+import com.example.sharemind.email.exception.InvalidEmailException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -21,8 +24,10 @@ public class ConsultController {
     private final EmailService emailService;
 
     @PostMapping
-    public ResponseEntity<Void> createConsult(@RequestBody CreateConsultRequest createConsultRequest) {
-
+    public ResponseEntity<Void> createConsult(@Valid @RequestBody CreateConsultRequest createConsultRequest, Errors errors) {
+        if (errors.hasErrors()){
+            throw new InvalidEmailException(createConsultRequest.getEmail());
+        }
         consultService.createConsult(createConsultRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -33,7 +38,7 @@ public class ConsultController {
         return ResponseEntity.ok(consultService.getConsult(consultUuid, getConsultRequest));
     }
 
-    @GetMapping("/email/{consult_id}")
+    @GetMapping("/email/{consultId}")
     public void sendEmailTest(@PathVariable Long consultId) {
         emailService.sendConsultationLink(consultId);
     }

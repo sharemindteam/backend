@@ -1,6 +1,5 @@
 package com.example.sharemind.email.application;
 
-import java.util.UUID;
 
 public interface EmailService {
 

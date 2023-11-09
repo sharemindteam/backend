@@ -1,7 +1,6 @@
 package com.example.sharemind.consult.presentation;
 
 import com.example.sharemind.consult.application.ConsultService;
-import com.example.sharemind.email.application.EmailService;
 import com.example.sharemind.consult.dto.request.CreateConsultRequest;
 import com.example.sharemind.consult.dto.request.GetConsultRequest;
 import com.example.sharemind.consult.dto.response.GetConsultResponse;
@@ -21,7 +20,6 @@ import java.util.UUID;
 public class ConsultController {
 
     private final ConsultService consultService;
-    private final EmailService emailService;
 
     @PostMapping
     public ResponseEntity<Void> createConsult(@Valid @RequestBody CreateConsultRequest createConsultRequest,

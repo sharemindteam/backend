@@ -1,6 +1,5 @@
 package com.example.sharemind.email.application;
 
-import com.example.sharemind.consult.application.ConsultService;
 import com.example.sharemind.consult.domain.Consult;
 import com.example.sharemind.email.application.content.EmailContent;
 import com.example.sharemind.email.application.content.EmailTypes;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService {
     private final MessageRepository messageRepository;
-    private final ConsultService consultService;
     private final JavaMailSender mailSender;
     private final EmailContent emailContent;
 

@@ -1,6 +1,5 @@
 package com.example.sharemind.consult.application;
 
-import com.example.sharemind.consult.domain.Consult;
 import java.util.UUID;
 
 import com.example.sharemind.consult.dto.request.CreateConsultRequest;

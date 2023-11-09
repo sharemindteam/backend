@@ -1,6 +1,5 @@
 package com.example.sharemind.message.presentation;
 
-import com.example.sharemind.email.application.EmailService;
 import com.example.sharemind.message.application.MessageService;
 import com.example.sharemind.message.dto.request.MessageRequest;
 import lombok.RequiredArgsConstructor;

@@ -1,8 +1,6 @@
 package com.example.sharemind.email.application.content;
 
 import com.example.sharemind.consult.domain.Consult;
-import com.example.sharemind.message.dto.response.MessageResponse;
-import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

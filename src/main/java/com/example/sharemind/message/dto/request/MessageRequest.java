@@ -1,6 +1,5 @@
 package com.example.sharemind.message.dto.request;
 
-import java.util.UUID;
 import lombok.Getter;
 
 @Getter

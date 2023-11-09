@@ -16,17 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v0/messages")
 public class MessageController {
     private final MessageService messageService;
-    private final EmailService emailService;
 
     @PostMapping
     public ResponseEntity<Void> createMessage(@RequestBody MessageRequest messageRequest) {
         messageService.saveMessage(messageRequest);
-        Boolean isCustomer = messageRequest.getIsCustomer();
-        if (Boolean.TRUE.equals(isCustomer)) {
-            emailService.notifyConsultationApply(messageRequest.getConsultId());
-        } else if (Boolean.FALSE.equals(isCustomer)) {
-            emailService.notifyConsultationReply(messageRequest.getConsultId());
-        }
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

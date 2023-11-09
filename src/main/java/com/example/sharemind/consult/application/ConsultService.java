@@ -11,6 +11,4 @@ public interface ConsultService {
     void createConsult(CreateConsultRequest createConsultRequest);
 
     GetConsultResponse getConsult(UUID consultUuid, GetConsultRequest getConsultRequest);
-
-    Consult getConsult(Long consultId);
 }

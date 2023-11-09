@@ -5,7 +5,6 @@ import com.example.sharemind.email.application.EmailService;
 import com.example.sharemind.consult.dto.request.CreateConsultRequest;
 import com.example.sharemind.consult.dto.request.GetConsultRequest;
 import com.example.sharemind.consult.dto.response.GetConsultResponse;
-import com.example.sharemind.email.application.content.EmailTypes;
 import com.example.sharemind.email.exception.InvalidEmailException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -39,10 +38,5 @@ public class ConsultController {
     public ResponseEntity<GetConsultResponse> getConsult(@PathVariable UUID consultUuid,
                                                          @RequestBody GetConsultRequest getConsultRequest) {
         return ResponseEntity.ok(consultService.getConsult(consultUuid, getConsultRequest));
-    }
-
-    @GetMapping("/email/{consultId}")
-    public void sendEmailTest(@PathVariable Long consultId) {
-        emailService.sendEmailToCustomer(consultId, EmailTypes.LINK);
     }
 }

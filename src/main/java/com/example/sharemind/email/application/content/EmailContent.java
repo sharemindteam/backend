@@ -12,7 +12,7 @@ public class EmailContent {
     @Value("${server.url}")
     private String serverUrl;
 
-    @Value("${server.chatting}")
+    @Value("${server.chattingLink}")
     private String chattingUrl;
 
     private String getLink(UUID uuid) {
@@ -82,7 +82,7 @@ public class EmailContent {
         return new String[]{subject, body};
     }
 
-    public String[] getSecondReplyContent(Consult consult, List<MessageResponse> messageResponses) {//todo 리뷰 링크 추가
+    public String[] getSecondReplyContent(Consult consult, String allMessageResponses) {//todo 리뷰 링크 추가
         String subject = consult.getCustomer().getNickname()
                 + "님이 추가 질문에 대한 답변을 입력하였습니다.";
         String body = consult.getCustomer().getNickname()
@@ -92,14 +92,14 @@ public class EmailContent {
                 + "\n셰어마인드를 이용해 주셔서 감사합니다."
                 + "\n상담이 모두 마감되어 기존 상담 링크를 더 이상 이용하실 수 없습니다."
                 + "\n상담 내용은 아래 첨부해 드립니다.\n\n"
-                + messageResponses
+                + allMessageResponses
                 + "\n\n문의사항은 아래 오픈채팅 링크를 이용해 주시기 바랍니다.\n"
                 + chattingUrl;
         return new String[]{subject, body};
     }
 
     public String[] getNoAdditionalQuestionCustomerContent(Consult consult,
-                                                           List<MessageResponse> messageResponses) {//todo 리뷰 링크 추가
+                                                           String allMessageResponses) {//todo 리뷰 링크 추가
         String subject = consult.getCounselor().getNickname()
                 + "님과의 상담이 추가 질문 입력 기한이 경과되어 추가 질문 없이 종료되었습니다.";
         String body = "상담이 모두 마무리되었으며 추가 상담을 원하실 경우 새롭게 상담 신청을 진행해 주세요."
@@ -107,7 +107,7 @@ public class EmailContent {
                 + "\n셰어마인드를 이용해 주셔서 감사합니다."
                 + "\n상담이 모두 마감되어 기존 상담 링크를 더 이상 이용하실 수 없습니다."
                 + " 상담 내용은 아래 첨부해 드립니다.\n\n"
-                + messageResponses
+                + allMessageResponses
                 + "\n\n문의사항은 아래 오픈채팅 링크를 이용해 주시기 바랍니다.\n"
                 + chattingUrl;
         return new String[]{subject, body};

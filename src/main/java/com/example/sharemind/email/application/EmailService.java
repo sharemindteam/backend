@@ -1,11 +1,10 @@
 package com.example.sharemind.email.application;
 
 
+import com.example.sharemind.email.application.content.EmailTypes;
+
 public interface EmailService {
+    void sendEmailToCustomer(Long consultId, EmailTypes type);
 
-    void sendConsultationLink(Long consultId);
-
-    void notifyConsultationApply(Long consultId);
-
-    void notifyConsultationReply(Long consultId);
+    void sendEmailToCounselor(Long consultId, EmailTypes type);
 }

@@ -4,9 +4,9 @@ import com.example.sharemind.consult.application.ConsultService;
 import com.example.sharemind.consult.domain.Consult;
 import com.example.sharemind.email.application.content.EmailContent;
 import com.example.sharemind.email.application.content.EmailTypes;
-import com.example.sharemind.message.dto.response.MessageResponse;
+import com.example.sharemind.email.dto.response.getEmailResponse;
 import com.example.sharemind.message.repository.MessageRepository;
-import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -25,18 +25,22 @@ public class EmailServiceImpl implements EmailService {
             case LINK -> emailContent.getLinkContent(consult);
             case FIRST_REPLY -> emailContent.getFirstReplyContent(consult);
             case SECOND_REPLY -> {
-                List<MessageResponse> messageResponses = messageRepository.findAllByConsult(consult)
+                String messageString = messageRepository.findAllByConsult(consult)
                         .stream()
-                        .map(MessageResponse::from)
-                        .toList();
-                yield emailContent.getSecondReplyContent(consult, messageResponses);
+                        .map(message -> getEmailResponse.from(message, consult.getCustomer().getNickname(),
+                                consult.getCounselor().getNickname()))
+                        .map(getEmailResponse::toString)
+                        .collect(Collectors.joining("\n"));
+                yield emailContent.getSecondReplyContent(consult, messageString);
             }
             case CUSTOMER_NO_ADDITIONAL_QUESTION -> {
-                List<MessageResponse> messageResponses = messageRepository.findAllByConsult(consult)
+                String messageString = messageRepository.findAllByConsult(consult)
                         .stream()
-                        .map(MessageResponse::from)
-                        .toList();
-                yield emailContent.getNoAdditionalQuestionCustomerContent(consult, messageResponses);
+                        .map(message -> getEmailResponse.from(message, consult.getCustomer().getNickname(),
+                                consult.getCounselor().getNickname()))
+                        .map(getEmailResponse::toString)
+                        .collect(Collectors.joining("\n"));
+                yield emailContent.getNoAdditionalQuestionCustomerContent(consult, messageString);
             }
             case CUSTOMER_CANCEL -> emailContent.getCancelCustomerContent(consult);
             default -> throw new IllegalArgumentException("Invalid EmailTypes: " + type);
@@ -54,14 +58,14 @@ public class EmailServiceImpl implements EmailService {
         };
     }
 
-    public void sendEmailToCustomer(Long consultId, EmailTypes type) {
-        Consult consult = consultService.getConsult(consultId);
+    @Override
+    public void sendEmailToCustomer(Consult consult, EmailTypes type) {
         String[] content = getCustomerContent(consult, type);
         sendEmail(consult.getCustomer().getEmail(), content[0], content[1]);
     }
 
-    public void sendEmailToCounselor(Long consultId, EmailTypes type) {
-        Consult consult = consultService.getConsult(consultId);
+    @Override
+    public void sendEmailToCounselor(Consult consult, EmailTypes type) {
         String[] content = getCounselorContent(consult, type);
         sendEmail(consult.getCounselor().getEmail(), content[0], content[1]);
     }

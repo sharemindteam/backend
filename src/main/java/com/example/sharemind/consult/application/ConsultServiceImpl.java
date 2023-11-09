@@ -71,4 +71,9 @@ public class ConsultServiceImpl implements ConsultService {
 
         return GetConsultResponse.from(loginByCustomer, consult, messageResponses);
     }
+
+    public Consult getConsult(Long consultId) {
+        return consultRepository.findByConsultId(consultId)
+                .orElseThrow(() -> new ConsultNotFoundException(consultId));
+    }
 }

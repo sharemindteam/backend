@@ -8,6 +8,7 @@ import lombok.Getter;
 public class CreateConsultRequest {
 
     private Long counselorId;
+    
     @NotBlank
     @Email
     private String email;

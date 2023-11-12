@@ -4,6 +4,7 @@ import com.example.sharemind.consult.domain.Consult;
 import com.example.sharemind.email.application.content.EmailContent;
 import com.example.sharemind.email.application.content.EmailTypes;
 import com.example.sharemind.email.dto.response.getEmailResponse;
+import com.example.sharemind.email.exception.InvalidEmailTypeException;
 import com.example.sharemind.message.repository.MessageRepository;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +42,7 @@ public class EmailServiceImpl implements EmailService {
                 yield emailContent.getNoAdditionalQuestionCustomerContent(consult, messageString);
             }
             case CUSTOMER_CANCEL -> emailContent.getCancelCustomerContent(consult);
-            default -> throw new IllegalArgumentException("Invalid EmailTypes: " + type);
+            default -> throw new InvalidEmailTypeException(type);
         };
     }
 
@@ -52,7 +53,7 @@ public class EmailServiceImpl implements EmailService {
             case COUNSELOR_NO_ADDITIONAL_QUESTION -> emailContent.getNoAdditionalQuestionCounselorContent(consult);
             case COUNSELOR_CLOSURE -> emailContent.getClosureCounselorContent(consult);
             case COUNSELOR_CANCEL -> emailContent.getCancelCounselorContent(consult);
-            default -> throw new IllegalArgumentException("Invalid EmailTypes: " + type);
+            default -> throw new InvalidEmailTypeException(type);
         };
     }
 

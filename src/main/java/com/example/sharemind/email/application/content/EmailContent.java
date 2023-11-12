@@ -13,8 +13,11 @@ public class EmailContent {
     @Value("${server.chattingLink}")
     private String chattingUrl;
 
+    @Value("${server.v0-Endpoint}")
+    private String endpoint;
+
     private String getLink(UUID uuid) {
-        return serverUrl + "/" + uuid.toString();
+        return serverUrl + "/" + endpoint + "/" + uuid.toString();
     }
 
     public String[] getLinkContent(Consult consult) {

@@ -1,4 +1,4 @@
-package com.example.sharemind.consult.exception;
+package com.example.sharemind.global.exception;
 
 public class IncorrectPasswordException extends RuntimeException {
 

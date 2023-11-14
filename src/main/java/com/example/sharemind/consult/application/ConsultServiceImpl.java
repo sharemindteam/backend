@@ -107,11 +107,12 @@ public class ConsultServiceImpl implements ConsultService {
 
             consult.updateIsRefundToTrue();
         } else {
-            if (messages.size() == 2) {
-                emailService.sendEmailToCustomer(consult, EmailTypes.CUSTOMER_NO_ADDITIONAL_QUESTION);
-                emailService.sendEmailToCounselor(consult, EmailTypes.COUNSELOR_NO_ADDITIONAL_QUESTION);
-            } else {
-                emailService.sendEmailToCounselor(consult, EmailTypes.COUNSELOR_CLOSURE);
+            switch (messages.size()) {
+                case 2 -> {
+                    emailService.sendEmailToCustomer(consult, EmailTypes.CUSTOMER_NO_ADDITIONAL_QUESTION);
+                    emailService.sendEmailToCounselor(consult, EmailTypes.COUNSELOR_NO_ADDITIONAL_QUESTION);
+                }
+                case 4 -> emailService.sendEmailToCounselor(consult, EmailTypes.COUNSELOR_CLOSURE);
             }
         }
 

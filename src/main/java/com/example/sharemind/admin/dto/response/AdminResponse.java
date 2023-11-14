@@ -27,7 +27,7 @@ public class AdminResponse {
                 .consultId(consult.getConsultId())
                 .customerEmail(consult.getCustomer().getEmail())
                 .counselorEmail(consult.getCounselor().getEmail())
-                .createdAt(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(consult.getCreatedAt()))
+                .createdAt(DateTimeFormatter.ofPattern("MM-dd HH:mm").format(consult.getCreatedAt()))
                 .build();
     }
 }

@@ -5,7 +5,7 @@ import com.example.sharemind.consult.dto.request.CreateConsultRequest;
 import com.example.sharemind.consult.dto.request.GetConsultRequest;
 import com.example.sharemind.consult.dto.response.GetConsultResponse;
 import com.example.sharemind.consult.exception.ConsultNotFoundException;
-import com.example.sharemind.consult.exception.IncorrectPasswordException;
+import com.example.sharemind.global.exception.IncorrectPasswordException;
 import com.example.sharemind.consult.mapper.ConsultMapper;
 import com.example.sharemind.consult.repository.ConsultRepository;
 import com.example.sharemind.counselor.domain.Counselor;
@@ -45,7 +45,7 @@ public class ConsultServiceImpl implements ConsultService {
 
         Customer customer = customerRepository.save(customerMapper.toEntity(createConsultRequest.getEmail()));
 
-        Consult consult = consultRepository.save(consultMapper.toEntity(customer, counselor));
+        consultRepository.save(consultMapper.toEntity(customer, counselor));
     }
 
     @Override

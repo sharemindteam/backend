@@ -11,7 +11,6 @@ import java.util.List;
 public class GetConsultResponse {
 
     private final Long consultId;
-
     private final Boolean loginByCustomer;
     private final String customerNickname;
     private final String counselorNickname;

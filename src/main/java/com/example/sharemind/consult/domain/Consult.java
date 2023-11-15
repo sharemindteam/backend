@@ -57,4 +57,12 @@ public class Consult extends BaseEntity {
     public void updateIsPayToTrue() {
         this.isPay = true;
     }
+
+    public void updateIsRefundToTrue() {
+        this.isRefund = true;
+    }
+
+    public void updateIsActivatedToFalse() {
+        this.isActivated = false;
+    }
 }

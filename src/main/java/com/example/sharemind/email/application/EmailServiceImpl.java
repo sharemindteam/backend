@@ -6,6 +6,8 @@ import com.example.sharemind.email.application.content.EmailTypes;
 import com.example.sharemind.email.dto.response.getEmailResponse;
 import com.example.sharemind.email.exception.InvalidEmailTypeException;
 import com.example.sharemind.message.repository.MessageRepository;
+import com.example.sharemind.review.application.ReviewService;
+import com.example.sharemind.review.domain.Review;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService {
     private final MessageRepository messageRepository;
+    private final ReviewService reviewService;
     private final JavaMailSender mailSender;
     private final EmailContent emailContent;
 
@@ -24,22 +27,25 @@ public class EmailServiceImpl implements EmailService {
             case LINK -> emailContent.getLinkContent(consult);
             case FIRST_REPLY -> emailContent.getFirstReplyContent(consult);
             case SECOND_REPLY -> {
+                Review review = reviewService.findReviewByConsult(consult);
                 String messageString = messageRepository.findAllByConsult(consult)
                         .stream()
                         .map(message -> getEmailResponse.from(message, consult.getCustomer().getNickname(),
                                 consult.getCounselor().getNickname()))
                         .map(getEmailResponse::toString)
                         .collect(Collectors.joining("\n"));
-                yield emailContent.getSecondReplyContent(consult, messageString);
+                yield emailContent.getSecondReplyContent(consult, messageString, review.getReviewUuid());
             }
             case CUSTOMER_NO_ADDITIONAL_QUESTION -> {
+                Review review = reviewService.findReviewByConsult(consult);
                 String messageString = messageRepository.findAllByConsult(consult)
                         .stream()
                         .map(message -> getEmailResponse.from(message, consult.getCustomer().getNickname(),
                                 consult.getCounselor().getNickname()))
                         .map(getEmailResponse::toString)
                         .collect(Collectors.joining("\n"));
-                yield emailContent.getNoAdditionalQuestionCustomerContent(consult, messageString);
+                yield emailContent.getNoAdditionalQuestionCustomerContent(consult, messageString,
+                        review.getReviewUuid());
             }
             case CUSTOMER_CANCEL -> emailContent.getCancelCustomerContent(consult);
             default -> throw new InvalidEmailTypeException(type);

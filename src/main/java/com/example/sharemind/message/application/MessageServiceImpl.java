@@ -12,6 +12,7 @@ import com.example.sharemind.email.application.EmailService;
 import com.example.sharemind.message.domain.Message;
 import com.example.sharemind.message.dto.request.MessageRequest;
 import com.example.sharemind.message.repository.MessageRepository;
+import com.example.sharemind.review.application.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,7 @@ public class MessageServiceImpl implements MessageService {
     private final MessageRepository messageRepository;
     private final ConsultRepository consultRepository;
     private final EmailService emailService;
+    private final ReviewService reviewService;
 
     @Override
     @Transactional
@@ -46,6 +48,7 @@ public class MessageServiceImpl implements MessageService {
             }
         } else {
             if (isCounselorMessageExists) {
+                reviewService.createReview(consult);
                 emailService.sendEmailToCustomer(consult, SECOND_REPLY);
             } else {
                 emailService.sendEmailToCustomer(consult, FIRST_REPLY);

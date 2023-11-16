@@ -13,17 +13,20 @@ public class EmailContent {
     @Value("${server.chattingLink}")
     private String chattingUrl;
 
-    @Value("${server.v0-Endpoint}")
-    private String endpoint;
+    @Value("${server.v0-consultEndpoint}")
+    private String consultEndpoint;
 
-    private String getLink(UUID uuid) {
+    @Value("${server.v0-reviewEndpoint}")
+    private String reviewEndpoint;
+
+    private String getLink(String endpoint, UUID uuid) {
         return serverUrl + "/" + endpoint + "/" + uuid.toString();
     }
 
     public String[] getLinkContent(Consult consult) {
         String subject = consult.getCounselor().getNickname()
                 + "님께 상담 신청이 완료되었습니다. 아래 링크를 통해 상담 내용을 보내주세요.";
-        String link = getLink(consult.getConsultUuid());
+        String link = getLink(consultEndpoint, consult.getConsultUuid());
         String body = consult.getCounselor().getNickname()
                 + "님께 상담 신청이 완료되었습니다. 아래 링크를 통해 상담 내용을 보내주세요."
                 + "\n\n상담 링크 : \n"
@@ -38,7 +41,7 @@ public class EmailContent {
     public String[] getFirstApplyContent(Consult consult) {
         String subject = consult.getCustomer().getNickname()
                 + "님이 상담을 신청하셨습니다. 아래 링크를 통해 답변해 주세요.";
-        String link = getLink(consult.getConsultUuid());
+        String link = getLink(consultEndpoint, consult.getConsultUuid());
         String body = consult.getCustomer().getNickname()
                 + "님이 상담을 신청하셨습니다. 아래 링크를 통해 답변해 주세요."
                 + "\n\n상담 링크 : \n"
@@ -55,7 +58,7 @@ public class EmailContent {
     public String[] getSecondApplyContent(Consult consult) {
         String subject = consult.getCustomer().getNickname()
                 + "님이 추가 질문을 요청하였습니다.";
-        String link = getLink(consult.getConsultUuid());
+        String link = getLink(consultEndpoint, consult.getConsultUuid());
         String body = consult.getCustomer().getNickname()
                 + "님이 추가 질문을 요청하였습니다. 추가 질문 답변이 완료되면 판매가 자동으로 확정됩니다."
                 + "\n\n상담 링크: \n"
@@ -71,7 +74,7 @@ public class EmailContent {
     public String[] getFirstReplyContent(Consult consult) {
         String subject = consult.getCounselor().getNickname()
                 + "님이 답변을 입력하셨습니다.";
-        String link = getLink(consult.getConsultUuid());
+        String link = getLink(consultEndpoint, consult.getConsultUuid());
         String body = "추가 질문이 있으실 경우 24시간 내에 추가 질문을 남겨주세요."
                 + "24시간 경과 이후에는 추가 질문에 대해 답변을 받지 못하여도 결제 금액이 환불되지 않습니다."
                 + "\n\n상담 링크 : \n"
@@ -83,13 +86,15 @@ public class EmailContent {
         return new String[]{subject, body};
     }
 
-    public String[] getSecondReplyContent(Consult consult, String allMessageResponses) {//todo 리뷰 링크 추가
+    public String[] getSecondReplyContent(Consult consult, String allMessageResponses, UUID reviewUuid) {
         String subject = consult.getCustomer().getNickname()
                 + "님이 추가 질문에 대한 답변을 입력하였습니다.";
+        String link = getLink(reviewEndpoint, reviewUuid);
         String body = consult.getCustomer().getNickname()
                 + "님이 추가 질문에 대한 답변을 입력하였습니다."
                 + "\n\n상담이 모두 마무리되었으며 추가 상담을 원하실 경우 새롭게 상담 신청을 진행해 주세요."
                 + "\n아래 링크를 통해 상담을 평가하실 수 있습니다.\n"
+                + link
                 + "\n셰어마인드를 이용해 주셔서 감사합니다."
                 + "\n상담이 모두 마감되어 기존 상담 링크를 더 이상 이용하실 수 없습니다."
                 + "\n상담 내용은 아래 첨부해 드립니다.\n\n"
@@ -100,11 +105,13 @@ public class EmailContent {
     }
 
     public String[] getNoAdditionalQuestionCustomerContent(Consult consult,
-                                                           String allMessageResponses) {//todo 리뷰 링크 추가
+                                                           String allMessageResponses, UUID reviewUuid) {
         String subject = consult.getCounselor().getNickname()
                 + "님과의 상담이 추가 질문 입력 기한이 경과되어 추가 질문 없이 종료되었습니다.";
+        String link = getLink(reviewEndpoint, reviewUuid);
         String body = "상담이 모두 마무리되었으며 추가 상담을 원하실 경우 새롭게 상담 신청을 진행해 주세요."
                 + "\n 아래 링크를 통해 상담을 평가하실 수 있습니다.\n"
+                + link
                 + "\n셰어마인드를 이용해 주셔서 감사합니다."
                 + "\n상담이 모두 마감되어 기존 상담 링크를 더 이상 이용하실 수 없습니다."
                 + " 상담 내용은 아래 첨부해 드립니다.\n\n"

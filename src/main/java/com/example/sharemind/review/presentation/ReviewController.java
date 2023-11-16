@@ -27,7 +27,7 @@ public class ReviewController {
     }
 
     @GetMapping("/{reviewUuid}")
-    public ResponseEntity<Void> getConsult(@PathVariable UUID reviewUuid) {
+    public ResponseEntity<Void> getReview(@PathVariable UUID reviewUuid) {
         reviewService.findReviewByReviewUuid(reviewUuid);
         return ResponseEntity.status(HttpStatus.OK).build();
     }

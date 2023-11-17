@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ReviewController {
     private final ReviewService reviewService;
 
-    @PatchMapping("/{reviewUuid}")
+    @PatchMapping()
     public ResponseEntity<Void> updateReview(@RequestBody UpdateReviewRequest updateReviewRequest) {
         reviewService.updateReview(updateReviewRequest.getReviewUuid(), updateReviewRequest);
         return ResponseEntity.status(HttpStatus.OK).build();
@@ -33,7 +33,7 @@ public class ReviewController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @GetMapping("/{counselorId}")
+    @GetMapping("counselors/{counselorId}")
     public ResponseEntity<List<GetReviewResponse>> getReviewsByCounselorId(@PathVariable Long counselorId) {
         List<GetReviewResponse> reviews = reviewService.findAllReviewsByCounselorId(counselorId);
         return ResponseEntity.ok(reviews);

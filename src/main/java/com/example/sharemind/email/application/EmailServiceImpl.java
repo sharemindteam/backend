@@ -6,8 +6,9 @@ import com.example.sharemind.email.application.content.EmailTypes;
 import com.example.sharemind.email.dto.response.getEmailResponse;
 import com.example.sharemind.email.exception.InvalidEmailTypeException;
 import com.example.sharemind.message.repository.MessageRepository;
-import com.example.sharemind.review.application.ReviewService;
 import com.example.sharemind.review.domain.Review;
+import com.example.sharemind.review.exception.ReviewNotFoundException;
+import com.example.sharemind.review.repository.ReviewRepository;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
@@ -18,7 +19,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService {
     private final MessageRepository messageRepository;
-    private final ReviewService reviewService;
+    private final ReviewRepository reviewRepository;
     private final JavaMailSender mailSender;
     private final EmailContent emailContent;
 
@@ -27,7 +28,8 @@ public class EmailServiceImpl implements EmailService {
             case LINK -> emailContent.getLinkContent(consult);
             case FIRST_REPLY -> emailContent.getFirstReplyContent(consult);
             case SECOND_REPLY -> {
-                Review review = reviewService.findReviewByConsult(consult);
+                Review review = reviewRepository.findByConsult(consult)
+                        .orElseThrow(() -> new ReviewNotFoundException(consult.getConsultId()));
                 String messageString = messageRepository.findAllByConsult(consult)
                         .stream()
                         .map(message -> getEmailResponse.from(message, consult.getCustomer().getNickname(),
@@ -37,7 +39,8 @@ public class EmailServiceImpl implements EmailService {
                 yield emailContent.getSecondReplyContent(consult, messageString, review.getReviewUuid());
             }
             case CUSTOMER_NO_ADDITIONAL_QUESTION -> {
-                Review review = reviewService.findReviewByConsult(consult);
+                Review review = reviewRepository.findByConsult(consult)
+                        .orElseThrow(() -> new ReviewNotFoundException(consult.getConsultId()));
                 String messageString = messageRepository.findAllByConsult(consult)
                         .stream()
                         .map(message -> getEmailResponse.from(message, consult.getCustomer().getNickname(),

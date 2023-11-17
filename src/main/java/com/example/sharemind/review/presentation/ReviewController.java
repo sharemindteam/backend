@@ -2,6 +2,8 @@ package com.example.sharemind.review.presentation;
 
 import com.example.sharemind.review.application.ReviewService;
 import com.example.sharemind.review.dto.request.UpdateReviewRequest;
+import com.example.sharemind.review.dto.response.GetReviewResponse;
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,9 +22,8 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @PatchMapping("/{reviewUuid}")
-    public ResponseEntity<Void> updateReview(@PathVariable UUID reviewUuid,
-                                             @RequestBody UpdateReviewRequest updateReviewRequest) {
-        reviewService.updateReview(reviewUuid, updateReviewRequest);
+    public ResponseEntity<Void> updateReview(@RequestBody UpdateReviewRequest updateReviewRequest) {
+        reviewService.updateReview(updateReviewRequest.getReviewUuid(), updateReviewRequest);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
@@ -30,5 +31,11 @@ public class ReviewController {
     public ResponseEntity<Void> getReview(@PathVariable UUID reviewUuid) {
         reviewService.findReviewByReviewUuid(reviewUuid);
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @GetMapping("/{counselorId}")
+    public ResponseEntity<List<GetReviewResponse>> getReviewsByCounselorId(@PathVariable Long counselorId) {
+        List<GetReviewResponse> reviews = reviewService.findAllReviewsByCounselorId(counselorId);
+        return ResponseEntity.ok(reviews);
     }
 }

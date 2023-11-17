@@ -20,7 +20,8 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Review extends BaseEntity {
     @Id
-    private Long id;
+    @Column(name = "review_id")
+    private Long reviewId;
 
     @MapsId
     @OneToOne(fetch = FetchType.LAZY)
@@ -29,6 +30,7 @@ public class Review extends BaseEntity {
 
     private Integer rating;
 
+    @Column(columnDefinition = "TEXT")
     private String comment;
 
     private UUID reviewUuid;

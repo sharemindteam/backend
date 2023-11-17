@@ -7,13 +7,12 @@ import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Consult> {
     @Query("SELECT review FROM Review review WHERE review.consult.counselor.counselorId = :counselorId")
-    List<Review> findAllByCounselorId(@Param("counselorId") Long counselorId);
+    List<Review> findAllByCounselorId(Long counselorId);
 
     Optional<Review> findByReviewUuidAndIsActivated(UUID reviewUuid, Boolean isActivated);
 

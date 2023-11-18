@@ -15,5 +15,5 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
 
     List<Message> findAllByConsult(Consult consult, Sort sort);
 
-    boolean existsByConsultAndIsCustomer(Consult consult, boolean isCustomer);
+    int countByConsultAndIsCustomer(Consult consult, boolean isCustomer);
 }

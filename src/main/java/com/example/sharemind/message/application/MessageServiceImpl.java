@@ -11,6 +11,7 @@ import com.example.sharemind.consult.repository.ConsultRepository;
 import com.example.sharemind.email.application.EmailService;
 import com.example.sharemind.message.domain.Message;
 import com.example.sharemind.message.dto.request.MessageRequest;
+import com.example.sharemind.message.exception.MaxMessageExceededException;
 import com.example.sharemind.message.repository.MessageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,13 +25,18 @@ public class MessageServiceImpl implements MessageService {
     private final ConsultRepository consultRepository;
     private final EmailService emailService;
 
+    private final static int MAX_MESSAGE_COUNT = 2;
+
     @Override
     @Transactional
     public void saveMessage(MessageRequest messageRequest) {
         Consult consult = consultRepository.findByConsultId(messageRequest.getConsultId())
                 .orElseThrow(() -> new ConsultNotFoundException(messageRequest.getConsultId()));
-        boolean isCustomerMessageExists = messageRepository.existsByConsultAndIsCustomer(consult, true);
-        boolean isCounselorMessageExists = messageRepository.existsByConsultAndIsCustomer(consult, false);
+        int messageCount = messageRepository.countByConsultAndIsCustomer(consult, messageRequest.getIsCustomer());
+
+        if (messageCount >= MAX_MESSAGE_COUNT) {
+            throw new MaxMessageExceededException(MAX_MESSAGE_COUNT);
+        }
 
         Message message = Message.builder()
                 .consult(consult)
@@ -39,16 +45,24 @@ public class MessageServiceImpl implements MessageService {
                 .build();
 
         if (messageRequest.getIsCustomer()) {
-            if (isCustomerMessageExists) {
-                emailService.sendEmailToCounselor(consult, SECOND_APPLY);
-            } else {
-                emailService.sendEmailToCounselor(consult, FIRST_APPLY);
+            switch (messageCount) {
+                case 0: {
+                    emailService.sendEmailToCounselor(consult, FIRST_APPLY);
+                    break;
+                }
+                case 1: {
+                    emailService.sendEmailToCounselor(consult, SECOND_APPLY);
+                }
             }
         } else {
-            if (isCounselorMessageExists) {
-                emailService.sendEmailToCustomer(consult, SECOND_REPLY);
-            } else {
-                emailService.sendEmailToCustomer(consult, FIRST_REPLY);
+            switch (messageCount) {
+                case 0: {
+                    emailService.sendEmailToCustomer(consult, FIRST_REPLY);
+                    break;
+                }
+                case 1: {
+                    emailService.sendEmailToCustomer(consult, SECOND_REPLY);
+                }
             }
         }
         messageRepository.save(message);

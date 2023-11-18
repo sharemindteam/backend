@@ -45,16 +45,24 @@ public class MessageServiceImpl implements MessageService {
                 .build();
 
         if (messageRequest.getIsCustomer()) {
-            if (messageCount == 1) {
-                emailService.sendEmailToCounselor(consult, SECOND_APPLY);
-            } else {
-                emailService.sendEmailToCounselor(consult, FIRST_APPLY);
+            switch (messageCount) {
+                case 0: {
+                    emailService.sendEmailToCounselor(consult, FIRST_APPLY);
+                    break;
+                }
+                case 1: {
+                    emailService.sendEmailToCounselor(consult, SECOND_APPLY);
+                }
             }
         } else {
-            if (messageCount == 1) {
-                emailService.sendEmailToCustomer(consult, SECOND_REPLY);
-            } else {
-                emailService.sendEmailToCustomer(consult, FIRST_REPLY);
+            switch (messageCount) {
+                case 0: {
+                    emailService.sendEmailToCustomer(consult, FIRST_REPLY);
+                    break;
+                }
+                case 1: {
+                    emailService.sendEmailToCustomer(consult, SECOND_REPLY);
+                }
             }
         }
         messageRepository.save(message);

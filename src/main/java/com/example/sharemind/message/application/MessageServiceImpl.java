@@ -13,8 +13,6 @@ import com.example.sharemind.message.domain.Message;
 import com.example.sharemind.message.dto.request.MessageRequest;
 import com.example.sharemind.message.exception.MaxMessageExceededException;
 import com.example.sharemind.message.repository.MessageRepository;
-import com.example.sharemind.review.mapper.ReviewMapper;
-import com.example.sharemind.review.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,8 +23,6 @@ public class MessageServiceImpl implements MessageService {
 
     private final MessageRepository messageRepository;
     private final ConsultRepository consultRepository;
-    private final ReviewRepository reviewRepository;
-    private final ReviewMapper reviewMapper;
     private final EmailService emailService;
 
     private final static int MAX_MESSAGE_COUNT = 2;
@@ -56,7 +52,6 @@ public class MessageServiceImpl implements MessageService {
             }
         } else {
             if (messageCount == 1) {
-                reviewRepository.save(reviewMapper.toEntity(consult));
                 emailService.sendEmailToCustomer(consult, SECOND_REPLY);
             } else {
                 emailService.sendEmailToCustomer(consult, FIRST_REPLY);

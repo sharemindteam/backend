@@ -8,6 +8,7 @@ import com.example.sharemind.email.exception.InvalidEmailTypeException;
 import com.example.sharemind.message.repository.MessageRepository;
 import com.example.sharemind.review.domain.Review;
 import com.example.sharemind.review.exception.ReviewNotFoundException;
+import com.example.sharemind.review.mapper.ReviewMapper;
 import com.example.sharemind.review.repository.ReviewRepository;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -22,12 +23,14 @@ public class EmailServiceImpl implements EmailService {
     private final ReviewRepository reviewRepository;
     private final JavaMailSender mailSender;
     private final EmailContent emailContent;
+    private final ReviewMapper reviewMapper;
 
     private String[] getCustomerContent(Consult consult, EmailTypes type) {
         return switch (type) {
             case LINK -> emailContent.getLinkContent(consult);
             case FIRST_REPLY -> emailContent.getFirstReplyContent(consult);
             case SECOND_REPLY -> {
+                reviewRepository.save(reviewMapper.toEntity(consult));
                 Review review = reviewRepository.findByConsult(consult)
                         .orElseThrow(() -> new ReviewNotFoundException(consult.getConsultId()));
                 String messageString = messageRepository.findAllByConsult(consult)
@@ -39,6 +42,7 @@ public class EmailServiceImpl implements EmailService {
                 yield emailContent.getSecondReplyContent(consult, messageString, review.getReviewUuid());
             }
             case CUSTOMER_NO_ADDITIONAL_QUESTION -> {
+                reviewRepository.save(reviewMapper.toEntity(consult));
                 Review review = reviewRepository.findByConsult(consult)
                         .orElseThrow(() -> new ReviewNotFoundException(consult.getConsultId()));
                 String messageString = messageRepository.findAllByConsult(consult)

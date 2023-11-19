@@ -33,7 +33,7 @@ public class ConsultController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @GetMapping("/{consultUuid}")
+    @PostMapping("/{consultUuid}")
     public ResponseEntity<GetConsultResponse> getConsult(@PathVariable UUID consultUuid,
                                                          @RequestBody GetConsultRequest getConsultRequest) {
         return ResponseEntity.ok(consultService.getConsult(consultUuid, getConsultRequest));

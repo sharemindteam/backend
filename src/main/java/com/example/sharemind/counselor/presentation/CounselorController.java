@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin
+@CrossOrigin(methods = {RequestMethod.GET, RequestMethod.OPTIONS}, maxAge = 1800)
 @RestController
 @RequestMapping("/api/v0/counselors")
 @RequiredArgsConstructor

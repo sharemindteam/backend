@@ -12,7 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin
+@CrossOrigin(methods = {RequestMethod.PATCH, RequestMethod.GET, RequestMethod.OPTIONS}, maxAge = 1800)
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v0/reviews")

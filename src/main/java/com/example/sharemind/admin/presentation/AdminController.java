@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin
+@CrossOrigin(methods = {RequestMethod.GET, RequestMethod.PATCH, RequestMethod.OPTIONS}, maxAge = 1800)
 @RestController
 @RequestMapping("/api/v0/admins")
 @RequiredArgsConstructor

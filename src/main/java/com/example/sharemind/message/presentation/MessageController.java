@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(methods = {RequestMethod.POST, RequestMethod.OPTIONS}, maxAge = 1800)
+@CrossOrigin
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v0/messages")

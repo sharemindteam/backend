@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
-@CrossOrigin(methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.OPTIONS}, maxAge = 1800)
+@CrossOrigin
 @RestController
 @RequestMapping("/api/v0/consults")
 @RequiredArgsConstructor
